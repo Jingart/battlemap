@@ -3,11 +3,14 @@
 #include <QApplication>
 #include <QPainter>
 #include <vector>
+#include <QDesktopWidget>
 
 using namespace std;
 
 //BattlemapTile ***bmmatrix;
 vector<vector<BattlemapTile> > bmmatrix;
+int bmmatrix_rows = 3;
+int bmmatrix_columns = 3;
 
 battlemap::battlemap(QWidget *parent)
                     : QWidget(parent)
@@ -15,30 +18,36 @@ battlemap::battlemap(QWidget *parent)
 
 }
 
-battlemap::battlemap(int x, int y)
+battlemap::battlemap(int rows, int columns)
 {
-    //**bmmatrix
-    // Set up sizes. (HEIGHT x WIDTH)
-    int spacer_x = 0;
-    int spacer_y = 0;
 
-    bmmatrix.resize(10);
-    for (int i = 0; i < 10; ++i)
-      bmmatrix[i].resize(10);
+    QDesktopWidget *desktop = QApplication::desktop();
+    int screenWidth = desktop->width();
+    int screenHeight = desktop->height();
+
+    int startpos_x = 200;
+    int startpos_y = 200;
+    int spacer_x = startpos_x;
+    int spacer_y = startpos_y;
+    const int tiledimension = 100;
+
+    bmmatrix.resize(bmmatrix_rows);
+    for (int i = 0; i < bmmatrix_rows; ++i)
+      bmmatrix[i].resize(bmmatrix_columns);
 
     //BattlemapTile *bm = new BattlemapTile();
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < bmmatrix_rows; i++)
     {
 
-        for(int j = 0; j < 10; j++)
+        for(int j = 0; j < bmmatrix_columns; j++)
         {
             BattlemapTile bm(spacer_x, spacer_y);
             bmmatrix[i][j] = bm;
-            spacer_x += 100;
+            spacer_x += tiledimension;
         }
 
-        spacer_y += 100;
-        spacer_x = 0;
+        spacer_y += tiledimension;
+        spacer_x = startpos_x;
     }
 }
 
@@ -51,9 +60,9 @@ void battlemap::paintEvent(QPaintEvent *event)
 
   painter.setPen(pen);
 
-  for(int i = 0; i < 5; i++)
+  for(int i = 0; i < bmmatrix_rows; i++)
   {
-      for(int j = 0; j < 10; j++)
+      for(int j = 0; j < bmmatrix_columns; j++)
       {
           bm = bmmatrix[i][j];
 
@@ -64,12 +73,6 @@ void battlemap::paintEvent(QPaintEvent *event)
 
       }
   }
-
-
-
-
-
-
 
 
 
