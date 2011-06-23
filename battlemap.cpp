@@ -81,7 +81,8 @@ void battlemap::paintEvent(QPaintEvent *event)
       for(int j = 0; j < bmmatrix_columns; j++)
       {
           bm = bmmatrix[i][j];
-          bm.AddToPosition(center.x() - 450, center.y() - 450);
+          //bm.AddToPosition(center.x() - (bmmatrix_rows * tiledim), center.y() - (bmmatrix_columns * tiledim));
+          bm.AddToPosition(center.x() - 400, center.y() - 400);
           painter.drawLine(bm.ltop, bm.rtop);
           painter.drawLine(bm.rtop, bm.rbottom);
           painter.drawLine(bm.rbottom, bm.lbottom);

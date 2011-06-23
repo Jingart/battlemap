@@ -27,7 +27,7 @@ class battlemap : public QWidget
   private:
     void drawMapWindow();
     void InitializeMatrix();
-    QPoint battlemap::WindowCenter();
+    QPoint WindowCenter();
 
   protected:
     void paintEvent(QPaintEvent *event);

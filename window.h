@@ -2,17 +2,23 @@
 #define WINDOW_H
 
 #include <QWidget>
+//#include <QMainWindow>
 #include "battlemap.h"
 class QLabel;
 class QPushButton;
+class QMenu;
 
-class window : public QWidget
+class Window : public QWidget
 {
     Q_OBJECT
 
 public:
-    window();
+    Window();
 private:
+    QMenu *fileMenu;
+    QMenu *editMenu;
+    QMenu *formatMenu;
+    QMenu *helpMenu;
     battlemap *mbwindow;
     QLabel *label;
     QPushButton *button;

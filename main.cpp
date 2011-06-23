@@ -2,6 +2,7 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include "window.h"
+#include "mainwindow.h"
 
 void center(QWidget &widget)
 {
@@ -29,7 +30,8 @@ int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
 
-  window mwin;
+  //Window mwin;
+  MainWindow mwin;
   center(mwin);
   mwin.show();
   //battlemap window(mwindow,1,1);
