@@ -4,6 +4,7 @@
 #include "window.h"
 
 class QMenu;
+class QAction;
 
 class MainWindow : public QMainWindow
 {
@@ -12,7 +13,13 @@ class MainWindow : public QMainWindow
 public:
     MainWindow();
 
+private slots:
+    void newMap();
+    //void close();
+
 private:
+    QAction *newAct;
+    QAction *exitAct;
     QMenu *fileMenu;
     //window *asd;
 

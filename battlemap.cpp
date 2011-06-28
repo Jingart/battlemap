@@ -12,8 +12,8 @@ using namespace std;
 
 //BattlemapTile ***bmmatrix;
 vector<vector<BattlemapTile> > bmmatrix;
-int bmmatrix_rows = 3;
-int bmmatrix_columns = 2;
+int bmmatrix_rows = 5;
+int bmmatrix_columns = 5;
 const int tiledim = 100;
 
 battlemap::battlemap(QWidget *parent)
@@ -39,10 +39,13 @@ void battlemap::InitializeMatrix()
 {
 
     QPoint center = WindowCenter();
+    bool shiftrow = false;
 
     // Create new tiles and set relative position between each tile column and row
     int pos_x = 50;
     int pos_y = 50;
+
+    int tile_width = 100;
 
     bmmatrix.resize(bmmatrix_rows);
     for (int i = 0; i < bmmatrix_rows; ++i)
@@ -58,8 +61,18 @@ void battlemap::InitializeMatrix()
             pos_x += tiledim;
         }
 
-        pos_y += 75;//tiledim - (tiledim / 3);
-        pos_x = 100;
+        pos_y += tile_width/2 * 1.6;//tiledim - (tiledim / 3);
+
+        if (shiftrow == false)
+        {
+            pos_x = 100;
+            shiftrow = true;
+
+        }else
+        {
+            pos_x = 50;
+            shiftrow = false;
+        }
     }
 }
 
