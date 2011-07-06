@@ -27,8 +27,10 @@ public:
     void InitPosition(int x, int y);
     void AddToPosition(int addx, int addy);
     void UpdatePosition(int x, int y);
+
     double GetSlopeDegree();
     QColor GetBorderColor();
+    void SetBorderColor(QColor color);
 
 private:
     double slopeDegree;
