@@ -17,8 +17,11 @@ int bmColumns_ = 5;
 const int tiledim = 100;
 int initpos_x = 150;
 int initpos_y = 100;
+const int NOT_SELECTED = -1;
+const int VERTICAL_SPACING = 5;
+const double HORIZONTAL_SPACING = 1.7;
 
-battlemap::battlemap(QWidget *parent)
+Battlemap::Battlemap(QWidget *parent)
                     : QWidget(parent)
 {
     InitializeMatrix();
@@ -34,7 +37,7 @@ battlemap::battlemap(QWidget *parent, int rows, int columns)
 }
 */
 
-battlemap::battlemap(int rows, int columns)
+Battlemap::Battlemap(int rows, int columns)
 {
     bmRows_ = rows;
     bmColumns_ = columns;
@@ -43,7 +46,7 @@ battlemap::battlemap(int rows, int columns)
 }
 
 
-void battlemap::InitializeMatrix()
+void Battlemap::InitializeMatrix()
 {
 
     bmmatrix.resize(bmRows_);
@@ -59,7 +62,7 @@ void battlemap::InitializeMatrix()
 //bmmatrix
 //BattlemapTile
 
-void battlemap::setupTile()
+void Battlemap::setupTile()
 {
     bool shiftrow = false;
     int tile_x = initpos_x;
@@ -71,10 +74,10 @@ void battlemap::setupTile()
         {
             BattlemapTile bm(tile_x, tile_y);
             bmmatrix[i][j] = bm;
-            tile_x += tiledim + 5;
+            tile_x += tiledim + VERTICAL_SPACING;
         }
 
-        tile_y += tiledim / 2 * 1.7;
+        tile_y += tiledim / 2 * HORIZONTAL_SPACING;
 
         if (shiftrow == false)
         {
@@ -91,7 +94,7 @@ void battlemap::setupTile()
 }
 
 
-void battlemap::mousePressEvent(QMouseEvent *event)
+void Battlemap::mousePressEvent(QMouseEvent *event)
 {
     clickStatus->clickPoint = event->pos();
     BattlemapTile bm;
@@ -123,20 +126,20 @@ void battlemap::mousePressEvent(QMouseEvent *event)
     repaint();
 }
 
-void battlemap::deselectTile()
+void Battlemap::deselectTile()
 {
 
     if(clickStatus->isTileSelected)
     {
         bmmatrix[clickStatus->clickI][clickStatus->clickJ].SetBorderColor(Qt::black);
-        clickStatus->clickI = -1;
-        clickStatus->clickJ = -1;
+        clickStatus->clickI = NOT_SELECTED;
+        clickStatus->clickJ = NOT_SELECTED;
         clickStatus->isTileSelected = false;
     }
 }
 
 
-void battlemap::resizeEvent(QResizeEvent *event)
+void Battlemap::resizeEvent(QResizeEvent *event)
 {
 
     //QMessageBox msgBox;
@@ -146,7 +149,7 @@ void battlemap::resizeEvent(QResizeEvent *event)
 }
 
 
-void battlemap::paintEvent(QPaintEvent *event)
+void Battlemap::paintEvent(QPaintEvent *event)
 {
 
   QPainter painter(this);
@@ -219,7 +222,7 @@ void battlemap::paintEvent(QPaintEvent *event)
 }
 
 
-QPoint battlemap::WindowCenter()
+QPoint Battlemap::WindowCenter()
 {
     QSize windowSize;
     windowSize = size();
@@ -229,7 +232,7 @@ QPoint battlemap::WindowCenter()
 }
 
 
-void battlemap::drawMapWindow()
+void Battlemap::drawMapWindow()
 {
 
 
@@ -259,7 +262,7 @@ void battlemap::drawMapWindow()
 }
 
 
-void battlemap::drawBox(QPen pen, int x, int y)
+void Battlemap::drawBox(QPen pen, int x, int y)
 {
     QPainter painter(this);
     painter.setPen(pen);

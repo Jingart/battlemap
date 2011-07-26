@@ -1,12 +1,14 @@
 #include "clickstatus.h"
 
 
+const int NOT_SELECTED = -1;
+
 ClickStatus::ClickStatus()
 {
 
     isTileSelected = false;
-    clickI = -1;
-    clickJ = -1;
+    clickI = NOT_SELECTED;
+    clickJ = NOT_SELECTED;
 }
 
 /*

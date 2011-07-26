@@ -32,7 +32,7 @@ void Window::SetupGridLayout()
 
 void Window::SetupNewBattlemap(int x, int y)
 {
-    mbwindow = new battlemap(x, y);
+    mbwindow = new Battlemap(x, y);
     SetupGridLayout();
 }
 

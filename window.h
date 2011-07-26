@@ -23,7 +23,7 @@ private:
     QMenu *editMenu;
     QMenu *formatMenu;
     QMenu *helpMenu;
-    battlemap *mbwindow;
+    Battlemap *mbwindow;
     QLabel *label;
     QPushButton *button;
     QListView *listView;
