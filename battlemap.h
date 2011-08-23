@@ -21,6 +21,7 @@ class battlemap : public QWidget
 
   public:
     battlemap(QWidget *parent = 0);
+    battlemap(QWidget *parent, int x, int y);
 
   protected:
     void paintEvent(QPaintEvent *event);

@@ -1,13 +1,13 @@
 #include "battlemap.h"
-
-//battlemap::battlemap()
-//{
-//}
-
-//#include "lines.h"
+#include "battlemaptile.h"
 #include <QApplication>
 #include <QPainter>
+#include <vector>
 
+using namespace std;
+
+//BattlemapTile ***bmmatrix;
+std::vector<std::vector<BattlemapTile> > bmmatrix2(10);
 
 battlemap::battlemap(QWidget *parent)
                     : QWidget(parent)
@@ -15,13 +15,37 @@ battlemap::battlemap(QWidget *parent)
 
 }
 
+battlemap::battlemap(QWidget *parent, int x, int y)
+                    : QWidget(parent)
+{
+    //**bmmatrix
+
+}
+
 void battlemap::paintEvent(QPaintEvent *event)
 {
 
   QPen pen(Qt::black, 2, Qt::SolidLine);
-
   QPainter painter(this);
 
+  int top = 0;
+  int left = 0;
+  int right = 100;
+  int bottom = 100;
+
+  QPoint ltop(left,top);
+  QPoint rtop(right,top);
+  QPoint lbottom(left,bottom);
+  QPoint rbottom(right,bottom);
+
+  painter.setPen(pen);
+  painter.drawLine(ltop, rtop);
+  painter.drawLine(rtop, rbottom);
+  painter.drawLine(rbottom, lbottom);
+  painter.drawLine(lbottom, ltop);
+
+
+  /*
   painter.setPen(pen);
   painter.drawLine(20, 40, 250, 40);
 
@@ -51,6 +75,7 @@ void battlemap::paintEvent(QPaintEvent *event)
   pen.setDashPattern(dashes);
   painter.setPen(pen);
   painter.drawLine(20, 240, 250, 240);
+  */
 }
 
 void battlemap::drawBox(QPen pen, int x, int y)
