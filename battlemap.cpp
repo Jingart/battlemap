@@ -7,7 +7,7 @@
 using namespace std;
 
 //BattlemapTile ***bmmatrix;
-std::vector<std::vector<BattlemapTile> > bmmatrix2(10);
+vector<vector<BattlemapTile> > bmmatrix;
 
 battlemap::battlemap(QWidget *parent)
                     : QWidget(parent)
@@ -15,11 +15,31 @@ battlemap::battlemap(QWidget *parent)
 
 }
 
-battlemap::battlemap(QWidget *parent, int x, int y)
-                    : QWidget(parent)
+battlemap::battlemap(int x, int y)
 {
     //**bmmatrix
+    // Set up sizes. (HEIGHT x WIDTH)
+    int spacer_x = 0;
+    int spacer_y = 0;
 
+    bmmatrix.resize(10);
+    for (int i = 0; i < 10; ++i)
+      bmmatrix[i].resize(10);
+
+    //BattlemapTile *bm = new BattlemapTile();
+    for(int i = 0; i < 5; i++)
+    {
+
+        for(int j = 0; j < 10; j++)
+        {
+            BattlemapTile bm(spacer_x, spacer_y);
+            bmmatrix[i][j] = bm;
+            spacer_x += 100;
+        }
+
+        spacer_y += 100;
+        spacer_x = 0;
+    }
 }
 
 void battlemap::paintEvent(QPaintEvent *event)
@@ -27,22 +47,31 @@ void battlemap::paintEvent(QPaintEvent *event)
 
   QPen pen(Qt::black, 2, Qt::SolidLine);
   QPainter painter(this);
-
-  int top = 0;
-  int left = 0;
-  int right = 100;
-  int bottom = 100;
-
-  QPoint ltop(left,top);
-  QPoint rtop(right,top);
-  QPoint lbottom(left,bottom);
-  QPoint rbottom(right,bottom);
+  BattlemapTile bm;
 
   painter.setPen(pen);
-  painter.drawLine(ltop, rtop);
-  painter.drawLine(rtop, rbottom);
-  painter.drawLine(rbottom, lbottom);
-  painter.drawLine(lbottom, ltop);
+
+  for(int i = 0; i < 5; i++)
+  {
+      for(int j = 0; j < 10; j++)
+      {
+          bm = bmmatrix[i][j];
+
+          painter.drawLine(bm.ltop, bm.rtop);
+          painter.drawLine(bm.rtop, bm.rbottom);
+          painter.drawLine(bm.rbottom, bm.lbottom);
+          painter.drawLine(bm.lbottom, bm.ltop);
+
+      }
+  }
+
+
+
+
+
+
+
+
 
 
   /*

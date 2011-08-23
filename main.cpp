@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
 
-  battlemap window;
+  battlemap window(1,1);
 
   window.setWindowTitle("Lines");
   window.show();
