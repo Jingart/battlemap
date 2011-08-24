@@ -1,6 +1,7 @@
 #include "battlemap.h"
 #include <QDesktopWidget>
 #include <QApplication>
+#include "window.h"
 
 void center(QWidget &widget)
 {
@@ -8,8 +9,8 @@ void center(QWidget &widget)
   int screenWidth;
   int screenHeight;
 
-  int WIDTH = 280;
-  int HEIGHT = 270;
+  int WIDTH = 500;
+  int HEIGHT = 400;
 
 
   QDesktopWidget *desktop = QApplication::desktop();
@@ -28,10 +29,14 @@ int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
 
-  battlemap window(1,1);
+  window mwin;
+  center(mwin);
+  mwin.show();
+  //battlemap window(mwindow,1,1);
 
-  window.setWindowTitle("Lines");
-  window.show();
+  //mwindow.setWindowTitle("Lines");
+  //mwindow.show();
+  //window.show();
   //center(window);
 
   return app.exec();

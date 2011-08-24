@@ -29,6 +29,21 @@ BattlemapTile::BattlemapTile(int spacer_x, int spacer_y)
     InitPosition(spacer_x, spacer_y);
 }
 
+void BattlemapTile::AddToPosition(int addx, int addy)
+{
+    ltop.setX(ltop.x() + addx);
+    ltop.setY(ltop.y() + addy);
+
+    rtop.setX(rtop.x() + addx);
+    rtop.setY(rtop.y() + addy);
+
+    lbottom.setX(lbottom.x() + addx);
+    lbottom.setY(lbottom.y() + addy);
+
+    rbottom.setX(rbottom.x() + addx);
+    rbottom.setY(rbottom.y() + addy);
+}
+
 void BattlemapTile::InitPosition(int x, int y)
 {
     ltop.setX(left + x);

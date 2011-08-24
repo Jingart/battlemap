@@ -1,8 +1,10 @@
 HEADERS += \
     battlemap.h \
-    battlemaptile.h
+    battlemaptile.h \
+    window.h
 
 SOURCES += \
     battlemap.cpp \
     main.cpp \
-    battlemaptile.cpp
+    battlemaptile.cpp \
+    window.cpp

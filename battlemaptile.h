@@ -14,6 +14,7 @@ public:
     BattlemapTile(int spacer_x, int spacer_y);
     void InitPosition();
     void InitPosition(int x, int y);
+    void AddToPosition(int addx, int addy);
 };
 
 #endif // BATTLEMAPTILE_H
