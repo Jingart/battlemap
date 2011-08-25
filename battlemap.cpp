@@ -4,13 +4,16 @@
 #include <QPainter>
 #include <vector>
 #include <QDesktopWidget>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
 
 using namespace std;
 
 //BattlemapTile ***bmmatrix;
 vector<vector<BattlemapTile> > bmmatrix;
 int bmmatrix_rows = 3;
-int bmmatrix_columns = 3;
+int bmmatrix_columns = 2;
 const int tiledim = 100;
 
 battlemap::battlemap(QWidget *parent)
@@ -34,15 +37,12 @@ battlemap::battlemap(int rows, int columns)
 
 void battlemap::InitializeMatrix()
 {
-    //QDesktopWidget *desktop = QApplication::desktop();
-    //int screenWidth = desktop->width();
-    //int screenHeight = desktop->height();
+
     QPoint center = WindowCenter();
 
-    int startpos_x = center.x();// - (bmmatrix_rows * tiledim);;
-    int startpos_y = center.y();// - (bmmatrix_columns * tiledim);;
-    int spacer_x = startpos_x;
-    int spacer_y = startpos_y;
+    // Set relative position between each tile
+    int pos_x = 50;
+    int pos_y = 50;
 
     bmmatrix.resize(bmmatrix_rows);
     for (int i = 0; i < bmmatrix_rows; ++i)
@@ -53,14 +53,20 @@ void battlemap::InitializeMatrix()
 
         for(int j = 0; j < bmmatrix_columns; j++)
         {
-            BattlemapTile bm(spacer_x, spacer_y);
+            BattlemapTile bm(pos_x, pos_y);
             bmmatrix[i][j] = bm;
-            spacer_x += tiledim;
+            pos_x += tiledim;
         }
 
-        spacer_y += tiledim;
-        spacer_x = startpos_x;
+        pos_y += tiledim - (tiledim / 3);
+        pos_x = 0;
     }
+}
+
+void battlemap::resizeEvent(QResizeEvent * event)
+{
+
+
 }
 
 void battlemap::paintEvent(QPaintEvent *event)
@@ -69,6 +75,7 @@ void battlemap::paintEvent(QPaintEvent *event)
   QPen pen(Qt::black, 2, Qt::SolidLine);
   QPainter painter(this);
   BattlemapTile bm;
+  char buff[30];
 
   QPoint center = WindowCenter();
 
@@ -80,21 +87,64 @@ void battlemap::paintEvent(QPaintEvent *event)
   {
       for(int j = 0; j < bmmatrix_columns; j++)
       {
+          /*
           bm = bmmatrix[i][j];
-          //bm.AddToPosition(center.x() - (bmmatrix_rows * tiledim), center.y() - (bmmatrix_columns * tiledim));
-          bm.AddToPosition(center.x() - 400, center.y() - 400);
+          //bm.AddToPosition(center.x() - (bmmatrix_rows / 2 * tiledim), center.y() - (bmmatrix_columns / 2 * tiledim));
+          //bm.AddToPosition(center.x(), center.y());
           painter.drawLine(bm.ltop, bm.rtop);
           painter.drawLine(bm.rtop, bm.rbottom);
           painter.drawLine(bm.rbottom, bm.lbottom);
           painter.drawLine(bm.lbottom, bm.ltop);
+          */
+
+          bm = bmmatrix[i][j];
+          painter.drawLine(bm.p1, bm.p2);
+          painter.drawLine(bm.p2, bm.p3);
+          painter.drawLine(bm.p3, bm.p4);
+          painter.drawLine(bm.p4, bm.p5);
+          painter.drawLine(bm.p5, bm.p6);
+          painter.drawLine(bm.p6, bm.p1);
+
 
       }
   }
 
+  // Write coords to window, debug
+  /*
+  itoa (bmmatrix[0][0].ltop.x(),buff,10);
+  painter.drawText(400,100, buff);
+
+  itoa (bmmatrix[0][0].ltop.y(),buff,10);
+  painter.drawText(400,120, buff);
+
+  itoa (center.x(),buff,10);
+  painter.drawText(430,100, buff);
+
+  itoa (center.y(),buff,10);
+  painter.drawText(430,120, buff);
+
+
+  itoa (bm.p2.x(),buff,10);
+  painter.drawText(470,100, buff);
+
+  itoa (bm.p2.y(),buff,10);
+  painter.drawText(470,120, buff);
+
+  itoa (bm.p3.x(),buff,10);
+  painter.drawText(510,100, buff);
+
+  itoa (bm.p3.y(),buff,10);
+  painter.drawText(510,120, buff);
+
+
+  itoa (bm.p4.x(),buff,10);
+  painter.drawText(550,100, buff);
+
+  itoa (bm.p4.y(),buff,10);
+  painter.drawText(550,120, buff);
+*/
 
   //drawMapWindow();
-
-
   /*
   painter.setPen(pen);
   painter.drawLine(20, 40, 250, 40);
