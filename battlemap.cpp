@@ -40,7 +40,7 @@ void battlemap::InitializeMatrix()
 
     QPoint center = WindowCenter();
 
-    // Set relative position between each tile
+    // Create new tiles and set relative position between each tile column and row
     int pos_x = 50;
     int pos_y = 50;
 
@@ -58,8 +58,8 @@ void battlemap::InitializeMatrix()
             pos_x += tiledim;
         }
 
-        pos_y += tiledim - (tiledim / 3);
-        pos_x = 0;
+        pos_y += 75;//tiledim - (tiledim / 3);
+        pos_x = 100;
     }
 }
 
