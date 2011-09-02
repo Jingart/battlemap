@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 #include <QMainWindow>
 #include "window.h"
+#include <QMouseEvent>
 
 class QMenu;
 class QAction;
@@ -21,7 +22,7 @@ private:
     QAction *newAct;
     QAction *exitAct;
     QMenu *fileMenu;
-    //window *asd;
+
 
 };
 

@@ -7,6 +7,7 @@
 class QLabel;
 class QPushButton;
 class QMenu;
+class QListView;
 
 class Window : public QWidget
 {
@@ -19,9 +20,11 @@ private:
     QMenu *editMenu;
     QMenu *formatMenu;
     QMenu *helpMenu;
+    QListView *listView;
     battlemap *mbwindow;
     QLabel *label;
     QPushButton *button;
+
 };
 
 #endif // WINDOW_H

@@ -10,6 +10,8 @@ Window::Window()
     label = new QLabel(tr("Laber &Label:"));
     button = new QPushButton(tr("&Button"));
 
+    //m_treeView = new QListView();
+
     QGridLayout *mainLayout = new QGridLayout;
     mainLayout->setColumnStretch(0, 1);
     mainLayout->setColumnStretch(3, 1);
@@ -18,5 +20,7 @@ Window::Window()
     mainLayout->addWidget(label, 2, 1, Qt::AlignRight);
     mainLayout->addWidget(button, 2, 2);
     setLayout(mainLayout);
+
+
 
 }

@@ -17,8 +17,11 @@ public:
     QPoint p5;
     QPoint p6;
 
+    QColor bordercolor;
+
     BattlemapTile();
     BattlemapTile(int spacer_x, int spacer_y);
+    bool IsTileAt(QPoint point);
     void InitPosition();
     void InitPosition(int x, int y);
     void AddToPosition(int addx, int addy);

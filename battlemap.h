@@ -6,6 +6,7 @@
 #include <QResizeEvent>
 #include <QWidget>
 
+
 class battlemap : public QWidget
 {
   Q_OBJECT
@@ -19,11 +20,13 @@ class battlemap : public QWidget
     void drawMapWindow();
     void InitializeMatrix();
     QPoint WindowCenter();
+    void drawBox(QPen pen, int x, int y);
 
   protected:
     void paintEvent(QPaintEvent *event);
-    void resizeEvent(QResizeEvent * event);
-    void drawBox(QPen pen, int x, int y);
+    void resizeEvent(QResizeEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+
 
 
 };

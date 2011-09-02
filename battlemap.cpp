@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -15,6 +16,8 @@ vector<vector<BattlemapTile> > bmmatrix;
 int bmmatrix_rows = 5;
 int bmmatrix_columns = 5;
 const int tiledim = 100;
+
+QPoint click;
 
 battlemap::battlemap(QWidget *parent)
                     : QWidget(parent)
@@ -42,8 +45,8 @@ void battlemap::InitializeMatrix()
     bool shiftrow = false;
 
     // Create new tiles and set relative position between each tile column and row
-    int pos_x = 50;
-    int pos_y = 50;
+    int pos_x = 0;
+    int pos_y = 0;
 
     int tile_width = 100;
 
@@ -65,36 +68,68 @@ void battlemap::InitializeMatrix()
 
         if (shiftrow == false)
         {
-            pos_x = 100;
+            pos_x = 50;
             shiftrow = true;
 
         }else
         {
-            pos_x = 50;
+            pos_x = 0;
             shiftrow = false;
         }
     }
 }
 
-void battlemap::resizeEvent(QResizeEvent * event)
+void battlemap::mousePressEvent(QMouseEvent *event)
+{
+    click = event->pos();
+    BattlemapTile bm;
+    char buff[30];
+    if(event->button() == Qt::LeftButton)
+    {
+        for(int i = 0; i < bmmatrix_rows; i++)
+        {
+            for(int j = 0; j < bmmatrix_columns; j++)
+            {
+
+                bm = bmmatrix[i][j];
+                if(bm.IsTileAt(event->pos()))
+                {
+                    bm.bordercolor = Qt::red;
+                    bmmatrix[i][j].bordercolor = Qt::red;
+                }
+
+            }
+        }
+
+    }
+    repaint();
+}
+
+void battlemap::resizeEvent(QResizeEvent *event)
 {
 
-
+    //QMessageBox msgBox;
+    //itoa(event->pos().x(),buff,10);
+    //msgBox.setText("The document has been modified.");
+    //msgBox.exec();
 }
 
 void battlemap::paintEvent(QPaintEvent *event)
 {
 
-  QPen pen(Qt::black, 2, Qt::SolidLine);
+  //QPen pen(Qt::black, 2, Qt::SolidLine);
   QPainter painter(this);
   BattlemapTile bm;
-  char buff[30];
+  //char buff[30];
 
   QPoint center = WindowCenter();
 
-  painter.setPen(pen);
+  QPen peny(bm.bordercolor, 2, Qt::SolidLine);
+  painter.setPen(peny);
+  painter.drawEllipse(click,10, 10);
 
-  painter.drawEllipse(center,10, 10);
+  //painter.setPen(pen);
+  //painter.drawEllipse(center,10, 10);
 
   for(int i = 0; i < bmmatrix_rows; i++)
   {
@@ -111,6 +146,8 @@ void battlemap::paintEvent(QPaintEvent *event)
           */
 
           bm = bmmatrix[i][j];
+          QPen pen(bm.bordercolor, 2, Qt::SolidLine);
+          painter.setPen(pen);
           painter.drawLine(bm.p1, bm.p2);
           painter.drawLine(bm.p2, bm.p3);
           painter.drawLine(bm.p3, bm.p4);

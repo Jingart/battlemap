@@ -17,34 +17,21 @@ int hex_baselength = 100;
 // terrengtype
 // eventuelle bitmaps
 
+
 BattlemapTile::BattlemapTile()
 {
     //InitPosition();
     //SetInitPosition();
 }
 
+
 BattlemapTile::BattlemapTile(int tile_x, int tile_y)
 {
     //InitPosition(spacer_x, spacer_y);
     SetInitPosition(tile_x, tile_y);
+    bordercolor = Qt::black;
 }
 
-/*
-void BattlemapTile::AddToPosition(int addx, int addy)
-{
-    ltop.setX(ltop.x() + addx);
-    ltop.setY(ltop.y() + addy);
-
-    rtop.setX(rtop.x() + addx);
-    rtop.setY(rtop.y() + addy);
-
-    lbottom.setX(lbottom.x() + addx);
-    lbottom.setY(lbottom.y() + addy);
-
-    rbottom.setX(rbottom.x() + addx);
-    rbottom.setY(rbottom.y() + addy);
-}
-*/
 
 // Set initial postition for Square
 void BattlemapTile::InitPosition(int x, int y)
@@ -61,6 +48,7 @@ void BattlemapTile::InitPosition(int x, int y)
     rbottom.setX(right + x);
     rbottom.setY(bottom + y);
 }
+
 
 // Set initial postition for Hexagon
 void BattlemapTile::SetInitPosition(int x, int y)
@@ -90,10 +78,27 @@ void BattlemapTile::SetInitPosition(int x, int y)
 
 }
 
+
 void BattlemapTile::InitPosition()
 {
     InitPosition(0, 0);
 }
+
+
+bool BattlemapTile::IsTileAt(QPoint point)
+{
+    bool res = false;
+    if (point.x() < p3.x() && point.x() > p1.x())
+    {
+        if (point.y() > p2.y() && point.y() < p5.y())
+        {
+            res = true;
+        }
+    }
+
+    return res;
+}
+
 
 // update
 void BattlemapTile::UpdatePosition(int x, int y)
