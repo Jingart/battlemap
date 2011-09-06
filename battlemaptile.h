@@ -17,17 +17,21 @@ public:
     QPoint p5;
     QPoint p6;
 
-    QColor bordercolor;
+    QColor borderColor;
 
     BattlemapTile();
     BattlemapTile(int spacer_x, int spacer_y);
     bool IsTileAt(QPoint point);
+
     void InitPosition();
     void InitPosition(int x, int y);
     void AddToPosition(int addx, int addy);
     void UpdatePosition(int x, int y);
+    double GetSlopeDegree();
+    QColor GetBorderColor();
 
 private:
+    double slopeDegree;
     void SetInitPosition(int x, int y);
 };
 

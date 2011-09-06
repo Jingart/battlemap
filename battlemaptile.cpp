@@ -7,7 +7,7 @@ int top = 0;
 int left = 0;
 int right = 100;
 int bottom = 100;
-
+//double a;
 int hex_baselength = 100;
 
 
@@ -29,7 +29,8 @@ BattlemapTile::BattlemapTile(int tile_x, int tile_y)
 {
     //InitPosition(spacer_x, spacer_y);
     SetInitPosition(tile_x, tile_y);
-    bordercolor = Qt::black;
+    borderColor = Qt::black;
+    slopeDegree = (double)(p2.y() - p1.y()) / ((p2.x() - p1.x()) - 0);
 }
 
 
@@ -88,15 +89,48 @@ void BattlemapTile::InitPosition()
 bool BattlemapTile::IsTileAt(QPoint point)
 {
     bool res = false;
+    // If point is inside vertical sides of tile
     if (point.x() < p3.x() && point.x() > p1.x())
     {
+        // If point is inside horisontal sides of tile
         if (point.y() > p2.y() && point.y() < p5.y())
         {
-            res = true;
+            double a = (p2.y() - p1.y()) / ((p2.x() - p1.x()) - 0);
+
+            // If point inside left side of tile
+            if (point.x() < p2.x())
+            {
+
+
+            }// If point inside right side of tile
+            else
+            {
+
+            }
+
         }
     }
 
     return res;
+
+/*
+    int y1 = bmmatrix[1][4].p2.y();
+    int y2 = bmmatrix[1][4].p3.y();
+    int x1 = 0;
+    int x2 = bmmatrix[1][4].p3.x() - bmmatrix[1][4].p2.x();
+
+    double t1 = (y2 - y1);
+    double t2 = (x2 - x1);
+    double a =  (double)t1 / t2;
+
+    int y = a*(x2 / 2);
+
+    itoa (y,buff,10);
+    painter.drawText(440,420, buff);
+
+    QPen pentest(Qt::red, 2, Qt::SolidLine);
+    painter.setPen(pentest);
+    painter.drawEllipse(bmmatrix[1][4].p2.x() + 25, y1 + y ,5, 5);*/
 }
 
 
@@ -106,5 +140,15 @@ void BattlemapTile::UpdatePosition(int x, int y)
 
 }
 
+
+double BattlemapTile::GetSlopeDegree()
+{
+    return slopeDegree;
+}
+
+QColor BattlemapTile::GetBorderColor()
+{
+    return borderColor;
+}
 
 

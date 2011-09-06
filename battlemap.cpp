@@ -91,7 +91,7 @@ void battlemap::mousePressEvent(QMouseEvent *event)
     // Deselect if tile is selected
     if(isTileSelected)
     {
-        bmmatrix[clickI_][clickJ_].bordercolor = Qt::black;
+        bmmatrix[clickI_][clickJ_].GetBorderColor() = Qt::black;
         clickI_ = -1;
         clickJ_ = -1;
         isTileSelected = false;
@@ -110,8 +110,8 @@ void battlemap::mousePressEvent(QMouseEvent *event)
                 {
                     clickI_ = i;
                     clickJ_ = j;
-                    bm.bordercolor = Qt::red;
-                    bmmatrix[clickI_][clickJ_].bordercolor = Qt::red;
+                    bm.GetBorderColor() = Qt::red;
+                    bmmatrix[clickI_][clickJ_].GetBorderColor() = Qt::red;
                     isTileSelected = true;
                     break;
                 }
@@ -136,10 +136,11 @@ void battlemap::paintEvent(QPaintEvent *event)
 
   QPainter painter(this);
   BattlemapTile bm;
+  char buff[30];
 
   QPoint center = WindowCenter();
 
-  QPen peny(bm.bordercolor, 2, Qt::SolidLine);
+  QPen peny(bm.GetBorderColor(), 2, Qt::SolidLine);
   painter.setPen(peny);
   painter.drawEllipse(click,10, 10);
 
@@ -151,7 +152,7 @@ void battlemap::paintEvent(QPaintEvent *event)
       for(int j = 0; j < bmColumns_; j++)
       {
           bm = bmmatrix[i][j];
-          QPen pen(bm.bordercolor, 2, Qt::SolidLine);
+          QPen pen(bm.GetBorderColor(), 2, Qt::SolidLine);
           painter.setPen(pen);
           painter.drawLine(bm.p1, bm.p2);
           painter.drawLine(bm.p2, bm.p3);
@@ -165,14 +166,37 @@ void battlemap::paintEvent(QPaintEvent *event)
   }
 
   // Write coords to window, debug
-  /*
-  itoa (bmmatrix[0][0].ltop.x(),buff,10);
-  painter.drawText(400,100, buff);
+  itoa (bmmatrix[1][4].p2.x(),buff,10);
+  painter.drawText(400,400, buff);
 
-  itoa (bmmatrix[0][0].ltop.y(),buff,10);
-  painter.drawText(400,120, buff);
+  itoa (bmmatrix[1][4].p2.y(),buff,10);
+  painter.drawText(420,400, buff);
 
-*/
+  itoa (bmmatrix[1][4].p3.x(),buff,10);
+  painter.drawText(400,420, buff);
+
+  itoa (bmmatrix[1][4].p3.y(),buff,10);
+  painter.drawText(420,420, buff);
+
+  int y1 = bmmatrix[1][4].p2.y();
+  int y2 = bmmatrix[1][4].p3.y();
+  int x1 = 0;
+  int x2 = bmmatrix[1][4].p3.x() - bmmatrix[1][4].p2.x();
+
+  double t1 = (y2 - y1);
+  double t2 = (x2 - x1);
+  double a =  (double)t1 / t2;
+
+  //int y = a*(x2 / 2);
+  int y = -bmmatrix[1][4].GetSlopeDegree() * (x2 / 2);
+
+
+  itoa (y,buff,10);
+  painter.drawText(440,420, buff);
+
+  QPen pentest(Qt::red, 2, Qt::SolidLine);
+  painter.setPen(pentest);
+  painter.drawEllipse(bmmatrix[1][4].p2.x() + 25, y1 + y ,5, 5);
 
 }
 
