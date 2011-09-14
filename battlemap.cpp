@@ -53,8 +53,11 @@ void battlemap::InitializeMatrix()
     bool shiftrow = false;
 
     // Create new tiles and set relative position between each tile column and row
-    int pos_x = 50;
+    int pos_x = 150;
     int pos_y = 100;
+
+    int tile_x = pos_x;
+    int tile_y = pos_y;
 
     int tile_width = 100;
 
@@ -64,24 +67,24 @@ void battlemap::InitializeMatrix()
 
     for(int i = 0; i < bmRows_; i++)
     {
-
         for(int j = 0; j < bmColumns_; j++)
         {
-            BattlemapTile bm(pos_x, pos_y);
+            BattlemapTile bm(tile_x, tile_y);
             bmmatrix[i][j] = bm;
-            pos_x += tiledim + 5;
+            tile_x += tiledim + 5;
         }
 
-        pos_y += tile_width/2 * 1.7;//tiledim - (tiledim / 3);
+        tile_y += tile_width / 2 * 1.7;
 
         if (shiftrow == false)
         {
-            pos_x = 52.5;
+            tile_x = pos_x;
+            tile_x = tile_x - 52.5;
             shiftrow = true;
 
         }else
         {
-            pos_x = 0;
+            tile_x = pos_x;
             shiftrow = false;
         }
     }
@@ -173,10 +176,10 @@ void battlemap::paintEvent(QPaintEvent *event)
   }
 
   // Write coords to window, debug
-  itoa (bmmatrix[1][4].p2.x(),buff,10);
+  itoa (click.x(),buff,10);
   painter.drawText(400,400, buff);
 
-  itoa (bmmatrix[1][4].p2.y(),buff,10);
+  itoa (click.y(),buff,10);
   painter.drawText(420,400, buff);
 
   itoa (bmmatrix[1][4].p3.x(),buff,10);

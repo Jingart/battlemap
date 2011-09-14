@@ -6,6 +6,9 @@
 class QLabel;
 class QPushButton;
 class QMenu;
+class QListView;
+class QTreeWidget;
+class QListViewItem;
 
 class Window : public QWidget
 {
@@ -21,6 +24,8 @@ private:
     battlemap *mbwindow;
     QLabel *label;
     QPushButton *button;
+    QListView *listView;
+    QTreeWidget *treeWidget;
 
 };
 
