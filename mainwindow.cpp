@@ -22,7 +22,7 @@ MainWindow::MainWindow()
     mainwidget->setLayout(layout);
 */
 
-    newAct = new QAction(tr("&New Map"), this);
+    newAct = new QAction(tr("&New.."), this);
     newAct->setShortcuts(QKeySequence::New);
     newAct->setStatusTip(tr("Create a new Battlemap"));
     connect(newAct, SIGNAL(triggered()), this, SLOT(newMap()));
@@ -36,11 +36,15 @@ MainWindow::MainWindow()
     fileMenu->addAction(newAct);
     fileMenu->addAction(exitAct);
     //http://doc.qt.nokia.com/latest/mainwindows-menus-mainwindow-cpp.html
-    setMinimumSize(700, 600);
+    setMinimumSize(1000, 700);
 
 }
 
 void MainWindow::newMap()
 {
     //infoLabel->setText(tr("Invoked <b>File|New</b>"));
+    bool ok;
+    QString text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
+                                         tr("User name:"), QLineEdit::Normal,
+                                         QDir::home().dirName(), &ok);
 }

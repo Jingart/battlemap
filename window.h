@@ -16,6 +16,7 @@ class Window : public QWidget
 
 public:
     Window();
+    void SetupNewBattlemap();
 private:
     QMenu *fileMenu;
     QMenu *editMenu;
