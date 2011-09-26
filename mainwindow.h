@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 #include <QMainWindow>
 #include "window.h"
+#include "dialognew.h"
 #include <QMouseEvent>
 
 class QMenu;
@@ -16,12 +17,13 @@ public:
 
 private slots:
     void newMap();
-    //void close();
 
 private:
     QAction *newAct;
     QAction *exitAct;
     QMenu *fileMenu;
+    DialogNew *newdialog;
+    Window *mainwidget;
 
 
 };

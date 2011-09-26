@@ -35,6 +35,11 @@ public:
 private:
     double slopeDegree;
     void SetInitPosition(int x, int y);
+    bool IsInsideVerticalTileSide(QPoint point);
+    bool IsInsideHorizontalTileSide(QPoint point);
+    bool IsInsideLeftTileSide(QPoint point);
+    bool IsInsideLeftAndUpperLowerSlope(QPoint point);
+    bool IsInsideRightUpperLowerSlope(QPoint point);
 };
 
 #endif // BATTLEMAPTILE_H

@@ -5,15 +5,18 @@
 Window::Window()
 {
 
-    //QWidget *widget = new QWidget;
-    //setCentralWidget(widget);
-
     listView = new QListView();
     listView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
-    mbwindow = new battlemap();
-    mbwindow->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //mbwindow = new battlemap(2, 2);
+    //mbwindow->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
+    //SetupGridLayout();
+
+}
+
+void Window::SetupGridLayout()
+{
     QGridLayout *mainLayout = new QGridLayout();
     mainLayout->setSpacing(5);
 
@@ -25,12 +28,17 @@ Window::Window()
     mainLayout->addWidget(mbwindow, 0, 1, 2, 2);
 
     setLayout(mainLayout);
-
-
-
 }
 
-void Window::SetupNewBattlemap()
+void Window::SetupNewBattlemap(int x, int y)
 {
-
+    mbwindow = new battlemap(x, y);
+    SetupGridLayout();
 }
+
+
+
+
+
+
+

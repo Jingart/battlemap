@@ -7,7 +7,6 @@ int top = 0;
 int left = 0;
 int right = 100;
 int bottom = 100;
-//double a;
 int hex_baselength = 100;
 
 
@@ -20,21 +19,20 @@ int hex_baselength = 100;
 
 BattlemapTile::BattlemapTile()
 {
-    //InitPosition();
-    //SetInitPosition();
+
 }
 
 
 BattlemapTile::BattlemapTile(int tile_x, int tile_y)
 {
-    //InitPosition(spacer_x, spacer_y);
+
     SetInitPosition(tile_x, tile_y);
     borderColor = Qt::black;
     slopeDegree = (double)(p2.y() - p1.y()) / ((p2.x() - p1.x()) - 0);
 }
 
 
-// Set initial postition for Square
+/*
 void BattlemapTile::InitPosition(int x, int y)
 {
     ltop.setX(left + x);
@@ -48,10 +46,9 @@ void BattlemapTile::InitPosition(int x, int y)
 
     rbottom.setX(right + x);
     rbottom.setY(bottom + y);
-}
+}*/
 
 
-// Set initial postition for Hexagon
 void BattlemapTile::SetInitPosition(int x, int y)
 {
     int w = hex_baselength / 2;
@@ -79,56 +76,78 @@ void BattlemapTile::SetInitPosition(int x, int y)
 
 }
 
-
+/*
 void BattlemapTile::InitPosition()
 {
     InitPosition(0, 0);
-}
+}*/
 
 
 bool BattlemapTile::IsTileAt(QPoint point)
 {
     bool result = false;
 
-    // If point is inside vertical sides of tile
-    if (point.x() < p3.x() && point.x() > p1.x())
-    {
-        // If point is inside horisontal sides of tile
-        if (point.y() > p2.y() && point.y() < p5.y())
-        {
-            // If point inside left side of tile
-            if (point.x() < p2.x())
+    if(IsInsideVerticalTileSide(point))
+
+        if (IsInsideHorizontalTileSide(point))
+
+            if(IsInsideLeftTileSide(point))
             {
-                int yUpper = slopeDegree * (point.x() - p1.x());
-                int yLower = -slopeDegree * (point.x() - p6.x());
-
-                // If inside left upper tileslope and inside left lower tileslope
-                if (point.y() > yUpper + p1.y() && point.y() < yLower + p6.y())
-                    result = true;
-
-            }// If point inside right side of tile
-            else
-            {
-                int yUpper = -slopeDegree * (point.x() - p2.x());
-                int yLower = slopeDegree * (point.x() - p4.x());
-
-                // If inside right upper tileslope and inside right lower tileslope
-                if (point.y() > yUpper + p2.y() && point.y() < yLower + p4.y())
+                if(IsInsideLeftAndUpperLowerSlope(point))
                     result = true;
             }
-        }
-    }
+            else // If point inside right side of tile
+            {
+                if (IsInsideRightUpperLowerSlope(point))
+                    result = true;
+            }
 
     return result;
 }
 
-
-// update
-void BattlemapTile::UpdatePosition(int x, int y)
+bool BattlemapTile::IsInsideVerticalTileSide(QPoint point)
 {
-
+    bool result = false;
+    if(point.x() < p3.x() && point.x() > p1.x())
+        result = true;
+    return result;
 }
 
+bool BattlemapTile::IsInsideHorizontalTileSide(QPoint point)
+{
+    bool result = false;
+    if(point.y() > p2.y() && point.y() < p5.y())
+        result = true;
+    return result;
+}
+
+bool BattlemapTile::IsInsideLeftTileSide(QPoint point)
+{
+    bool result = false;
+    if(point.x() < p2.x())
+        result = true;
+    return result;
+}
+
+bool BattlemapTile::IsInsideLeftAndUpperLowerSlope(QPoint point)
+{
+    bool result = false;
+    int yUpper = slopeDegree * (point.x() - p1.x());
+    int yLower = -slopeDegree * (point.x() - p6.x());
+    if(point.y() > yUpper + p1.y() && point.y() < yLower + p6.y())
+        result = true;
+    return result;
+}
+
+bool BattlemapTile::IsInsideRightUpperLowerSlope(QPoint point)
+{
+    bool result = false;
+    int yUpper = -slopeDegree * (point.x() - p2.x());
+    int yLower = slopeDegree * (point.x() - p4.x());
+    if(point.y() > yUpper + p2.y() && point.y() < yLower + p4.y())
+        result = true;
+    return result;
+}
 
 double BattlemapTile::GetSlopeDegree()
 {
@@ -146,5 +165,12 @@ void BattlemapTile::SetBorderColor(QColor color)
 {
     borderColor = color;
 }
+
+void BattlemapTile::UpdatePosition(int x, int y)
+{
+
+}
+
+
 
 

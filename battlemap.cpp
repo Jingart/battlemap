@@ -15,13 +15,8 @@ vector<vector<BattlemapTile> > bmmatrix;
 int bmRows_ = 3;
 int bmColumns_ = 5;
 const int tiledim = 100;
-
-// Clicked tile vars, class?
-bool isTileSelected = false;
-int clickI_ = -1;
-int clickJ_ = -1;
-QPoint click;
-
+int initpos_x = 150;
+int initpos_y = 100;
 
 battlemap::battlemap(QWidget *parent)
                     : QWidget(parent)
@@ -29,7 +24,7 @@ battlemap::battlemap(QWidget *parent)
     InitializeMatrix();
 }
 
-
+/*
 battlemap::battlemap(QWidget *parent, int rows, int columns)
 : QWidget(parent)
 {
@@ -37,11 +32,13 @@ battlemap::battlemap(QWidget *parent, int rows, int columns)
     bmColumns_ = columns;
     InitializeMatrix();
 }
-
+*/
 
 battlemap::battlemap(int rows, int columns)
 {
-
+    bmRows_ = rows;
+    bmColumns_ = columns;
+    clickStatus = new ClickStatus();
     InitializeMatrix();
 }
 
@@ -49,21 +46,24 @@ battlemap::battlemap(int rows, int columns)
 void battlemap::InitializeMatrix()
 {
 
-    QPoint center = WindowCenter();
-    bool shiftrow = false;
-
-    // Create new tiles and set relative position between each tile column and row
-    int pos_x = 150;
-    int pos_y = 100;
-
-    int tile_x = pos_x;
-    int tile_y = pos_y;
-
-    int tile_width = 100;
-
     bmmatrix.resize(bmRows_);
     for (int i = 0; i < bmRows_; ++i)
       bmmatrix[i].resize(bmColumns_);
+
+    setupTile();
+
+}
+
+//destructor
+//clickStatus
+//bmmatrix
+//BattlemapTile
+
+void battlemap::setupTile()
+{
+    bool shiftrow = false;
+    int tile_x = initpos_x;
+    int tile_y = initpos_y;
 
     for(int i = 0; i < bmRows_; i++)
     {
@@ -74,17 +74,17 @@ void battlemap::InitializeMatrix()
             tile_x += tiledim + 5;
         }
 
-        tile_y += tile_width / 2 * 1.7;
+        tile_y += tiledim / 2 * 1.7;
 
         if (shiftrow == false)
         {
-            tile_x = pos_x;
+            tile_x = initpos_x;
             tile_x = tile_x - 52.5;
             shiftrow = true;
 
         }else
         {
-            tile_x = pos_x;
+            tile_x = initpos_x;
             shiftrow = false;
         }
     }
@@ -93,17 +93,10 @@ void battlemap::InitializeMatrix()
 
 void battlemap::mousePressEvent(QMouseEvent *event)
 {
-    click = event->pos();
+    clickStatus->clickPoint = event->pos();
     BattlemapTile bm;
 
-    // Deselect if tile is selected
-    if(isTileSelected)
-    {
-        bmmatrix[clickI_][clickJ_].SetBorderColor(Qt::black);
-        clickI_ = -1;
-        clickJ_ = -1;
-        isTileSelected = false;
-    }
+    deselectTile();
 
     // Set color on clicked tile
     if(event->button() == Qt::LeftButton)
@@ -116,11 +109,11 @@ void battlemap::mousePressEvent(QMouseEvent *event)
                 bm = bmmatrix[i][j];
                 if(bm.IsTileAt(event->pos()))
                 {
-                    clickI_ = i;
-                    clickJ_ = j;
+                    clickStatus->clickI = i;
+                    clickStatus->clickJ = j;
                     //bm.GetBorderColor() = Qt::red;
-                    bmmatrix[clickI_][clickJ_].SetBorderColor(Qt::red);
-                    isTileSelected = true;
+                    bmmatrix[clickStatus->clickI][clickStatus->clickJ].SetBorderColor(Qt::red);
+                    clickStatus->isTileSelected = true;
                     break;
                 }
             }
@@ -128,6 +121,18 @@ void battlemap::mousePressEvent(QMouseEvent *event)
     }
 
     repaint();
+}
+
+void battlemap::deselectTile()
+{
+
+    if(clickStatus->isTileSelected)
+    {
+        bmmatrix[clickStatus->clickI][clickStatus->clickJ].SetBorderColor(Qt::black);
+        clickStatus->clickI = -1;
+        clickStatus->clickJ = -1;
+        clickStatus->isTileSelected = false;
+    }
 }
 
 
@@ -152,7 +157,7 @@ void battlemap::paintEvent(QPaintEvent *event)
 
   QPen peny(bm.GetBorderColor(), 2, Qt::SolidLine);
   painter.setPen(peny);
-  painter.drawEllipse(click,10, 10);
+  painter.drawEllipse(clickStatus->clickPoint,10, 10);
 
   //painter.setPen(pen);
   //painter.drawEllipse(center,10, 10);
@@ -175,6 +180,8 @@ void battlemap::paintEvent(QPaintEvent *event)
       }
   }
 
+  /*
+
   // Write coords to window, debug
   itoa (click.x(),buff,10);
   painter.drawText(400,400, buff);
@@ -182,33 +189,33 @@ void battlemap::paintEvent(QPaintEvent *event)
   itoa (click.y(),buff,10);
   painter.drawText(420,400, buff);
 
-  itoa (bmmatrix[1][4].p3.x(),buff,10);
+  itoa (bmmatrix[1][1].p3.x(),buff,10);
   painter.drawText(400,420, buff);
 
-  itoa (bmmatrix[1][4].p3.y(),buff,10);
+  itoa (bmmatrix[1][1].p3.y(),buff,10);
   painter.drawText(420,420, buff);
 
-  int y1 = bmmatrix[1][4].p2.y();
-  int y2 = bmmatrix[1][4].p3.y();
+  int y1 = bmmatrix[1][1].p2.y();
+  int y2 = bmmatrix[1][1].p3.y();
   int x1 = 0;
-  int x2 = bmmatrix[1][4].p3.x() - bmmatrix[1][4].p2.x();
+  int x2 = bmmatrix[1][1].p3.x() - bmmatrix[1][1].p2.x();
 
   double t1 = (y2 - y1);
   double t2 = (x2 - x1);
   double a =  (double)t1 / t2;
 
   //int y = a*(x2 / 2);
-  int y = -bmmatrix[1][4].GetSlopeDegree() * (x2 / 2);
+  int y = -bmmatrix[1][1].GetSlopeDegree() * (x2 / 2);
 
-  int yUpper = -bmmatrix[1][4].GetSlopeDegree() * (click.x() - bmmatrix[1][4].p2.x());
+  int yUpper = -bmmatrix[1][1].GetSlopeDegree() * (click.x() - bmmatrix[1][1].p2.x());
 
-  itoa (yUpper + bmmatrix[1][4].p2.y(),buff,10);
+  itoa (yUpper + bmmatrix[1][1].p2.y(),buff,10);
   painter.drawText(440,420, buff);
 
   QPen pentest(Qt::red, 2, Qt::SolidLine);
   painter.setPen(pentest);
-  painter.drawEllipse(bmmatrix[1][4].p2.x() + 25, y1 + y ,5, 5);
-
+  painter.drawEllipse(bmmatrix[1][1].p2.x() + 25, y1 + y ,5, 5);
+  */
 }
 
 

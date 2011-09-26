@@ -4,7 +4,7 @@
 
 MainWindow::MainWindow()
 {
-    Window *mainwidget = new Window;
+    mainwidget = new Window;
     setCentralWidget(mainwidget);
 
     /*
@@ -44,7 +44,16 @@ void MainWindow::newMap()
 {
     //infoLabel->setText(tr("Invoked <b>File|New</b>"));
     bool ok;
-    QString text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
+    /*QString text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
                                          tr("User name:"), QLineEdit::Normal,
-                                         QDir::home().dirName(), &ok);
+                                         QDir::home().dirName(), &ok);*/
+
+    newdialog = new DialogNew();
+    //newdialog->show();
+    newdialog->exec();
+
+    mainwidget->SetupNewBattlemap(2,2);
+
+
+
 }

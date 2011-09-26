@@ -3,7 +3,9 @@ HEADERS += \
     battlemaptile.h \
     window.h \
     mainwindow.h \
-    player.h
+    player.h \
+    dialognew.h \
+    clickstatus.h
 
 SOURCES += \
     battlemap.cpp \
@@ -11,4 +13,6 @@ SOURCES += \
     battlemaptile.cpp \
     window.cpp \
     mainwindow.cpp \
-    player.cpp
+    player.cpp \
+    dialognew.cpp \
+    clickstatus.cpp

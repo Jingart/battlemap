@@ -16,7 +16,8 @@ class Window : public QWidget
 
 public:
     Window();
-    void SetupNewBattlemap();
+    void SetupNewBattlemap(int x, int y);
+    void SetupGridLayout();
 private:
     QMenu *fileMenu;
     QMenu *editMenu;
