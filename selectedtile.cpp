@@ -1,9 +1,9 @@
-#include "clickstatus.h"
+#include "selectedtile.h"
 
 
 const int NOT_SELECTED = -1;
 
-ClickStatus::ClickStatus()
+SelectedTile::SelectedTile()
 {
 
     isTileSelected = false;

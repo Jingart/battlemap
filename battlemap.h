@@ -5,7 +5,8 @@
 #include <QPainter>
 #include <QResizeEvent>
 #include <QWidget>
-#include "clickstatus.h"
+#include "selectedtile.h"
+#include "tileposition.h"
 
 
 class Battlemap : public QWidget
@@ -18,17 +19,21 @@ class Battlemap : public QWidget
     //battlemap(QWidget *parent, int rows, int columns);
 
   private:
+    SelectedTile *clickStatus;
+    QPoint findWindowCenter();
     void drawMapWindow();
     void InitializeMatrix();
-    QPoint WindowCenter();
     void drawBox(QPen pen, int x, int y);
     void deselectTile();
-    ClickStatus *clickStatus;
+    void selectTile();
+    void setTileSelected(int row, int column);
+    TilePosition findTileAt(QPoint point);
 
   protected:
     void paintEvent(QPaintEvent *event);
     void resizeEvent(QResizeEvent *event);
     void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
     void setupTile();
 
 

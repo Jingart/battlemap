@@ -8,18 +8,22 @@
 #include <stdlib.h>
 #include <string>
 #include <QMessageBox>
+#include <QtDebug>
 
 using namespace std;
 
 vector<vector<BattlemapTile> > bmmatrix;
 int bmRows_ = 3;
 int bmColumns_ = 5;
-const int tiledim = 100;
+int tileLength = 100;
 int initpos_x = 150;
 int initpos_y = 100;
 const int NOT_SELECTED = -1;
 const int VERTICAL_SPACING = 5;
 const double HORIZONTAL_SPACING = 1.7;
+const double SHIFTROW_SPACING = 2.5;
+const double HALF_TILELENGTH = tileLength / 2;
+
 
 Battlemap::Battlemap(QWidget *parent)
                     : QWidget(parent)
@@ -41,10 +45,14 @@ Battlemap::Battlemap(int rows, int columns)
 {
     bmRows_ = rows;
     bmColumns_ = columns;
-    clickStatus = new ClickStatus();
+    clickStatus = new SelectedTile();
     InitializeMatrix();
 }
 
+//destructor
+//clickStatus
+//bmmatrix
+//BattlemapTile
 
 void Battlemap::InitializeMatrix()
 {
@@ -56,11 +64,6 @@ void Battlemap::InitializeMatrix()
     setupTile();
 
 }
-
-//destructor
-//clickStatus
-//bmmatrix
-//BattlemapTile
 
 void Battlemap::setupTile()
 {
@@ -74,15 +77,15 @@ void Battlemap::setupTile()
         {
             BattlemapTile bm(tile_x, tile_y);
             bmmatrix[i][j] = bm;
-            tile_x += tiledim + VERTICAL_SPACING;
+            tile_x += tileLength + VERTICAL_SPACING;
         }
 
-        tile_y += tiledim / 2 * HORIZONTAL_SPACING;
+        tile_y += HALF_TILELENGTH * HORIZONTAL_SPACING;
 
         if (shiftrow == false)
         {
             tile_x = initpos_x;
-            tile_x = tile_x - 52.5;
+            tile_x = tile_x - (HALF_TILELENGTH + SHIFTROW_SPACING);
             shiftrow = true;
 
         }else
@@ -97,33 +100,38 @@ void Battlemap::setupTile()
 void Battlemap::mousePressEvent(QMouseEvent *event)
 {
     clickStatus->clickPoint = event->pos();
-    BattlemapTile bm;
-
     deselectTile();
 
-    // Set color on clicked tile
     if(event->button() == Qt::LeftButton)
-    {
-        for(int i = 0; i < bmRows_; i++)
-        {
-            for(int j = 0; j < bmColumns_; j++)
-            {
+        selectTile();
 
-                bm = bmmatrix[i][j];
-                if(bm.IsTileAt(event->pos()))
-                {
-                    clickStatus->clickI = i;
-                    clickStatus->clickJ = j;
-                    //bm.GetBorderColor() = Qt::red;
-                    bmmatrix[clickStatus->clickI][clickStatus->clickJ].SetBorderColor(Qt::red);
-                    clickStatus->isTileSelected = true;
-                    break;
-                }
+    repaint();
+}
+
+void Battlemap::selectTile()
+{
+    BattlemapTile bm;
+
+    for(int i = 0; i < bmRows_; i++)
+    {
+        for(int j = 0; j < bmColumns_; j++)
+        {
+            bm = bmmatrix[i][j];
+            if(bm.IsTileAt(clickStatus->clickPoint))
+            {
+                setTileSelected(i, j);
+                break;
             }
         }
     }
+}
 
-    repaint();
+void Battlemap::setTileSelected(int row, int column)
+{
+    clickStatus->clickI = row;
+    clickStatus->clickJ = column;
+    bmmatrix[clickStatus->clickI][clickStatus->clickJ].SetBorderColor(Qt::red);
+    clickStatus->isTileSelected = true;
 }
 
 void Battlemap::deselectTile()
@@ -146,6 +154,41 @@ void Battlemap::resizeEvent(QResizeEvent *event)
     //itoa(event->pos().x(),buff,10);
     //msgBox.setText("The document has been modified.");
     //msgBox.exec();
+}
+
+void Battlemap::mouseMoveEvent(QMouseEvent *event)
+{
+    TilePosition tilePos;
+    if(clickStatus->isTileSelected)
+    {
+        tilePos = findTileAt(event->pos());
+        if((tilePos.row == 0 && tilePos.column == 0) || (tilePos.row == clickStatus->clickI + 1 && tilePos.column == clickStatus->clickJ + 1))
+            qDebug() << "no tile";
+        else
+            qDebug() << "tile found";
+
+
+    }
+}
+
+TilePosition Battlemap::findTileAt(QPoint point)
+{
+    TilePosition tilePos(0,0);
+
+    for(int i = 0; i < bmRows_; i++)
+    {
+        for(int j = 0; j < bmColumns_; j++)
+        {
+            if(bmmatrix[i][j].IsTileAt(point))
+            {
+                tilePos.row = i + 1;
+                tilePos.column = j + 1;
+                break;
+            }
+        }
+    }
+
+    return tilePos;
 }
 
 
@@ -222,7 +265,7 @@ void Battlemap::paintEvent(QPaintEvent *event)
 }
 
 
-QPoint Battlemap::WindowCenter()
+QPoint Battlemap::findWindowCenter()
 {
     QSize windowSize;
     windowSize = size();

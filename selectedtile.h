@@ -1,11 +1,11 @@
-#ifndef CLICKSTATUS_H
-#define CLICKSTATUS_H
+#ifndef SELECTEDTILE_H
+#define SELECTEDTILE_H
 #include <QPoint>
 
-class ClickStatus
+class SelectedTile
 {
 public:
-    ClickStatus();
+    SelectedTile();
     bool isTileSelected;
     int clickI;
     int clickJ;

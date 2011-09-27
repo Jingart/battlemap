@@ -1,3 +1,5 @@
+CONFIG += console
+
 HEADERS += \
     battlemap.h \
     battlemaptile.h \
@@ -5,7 +7,8 @@ HEADERS += \
     mainwindow.h \
     player.h \
     dialognew.h \
-    clickstatus.h
+    tileposition.h \
+    selectedtile.h
 
 SOURCES += \
     battlemap.cpp \
@@ -15,4 +18,5 @@ SOURCES += \
     mainwindow.cpp \
     player.cpp \
     dialognew.cpp \
-    clickstatus.cpp
+    tileposition.cpp \
+    selectedtile.cpp
