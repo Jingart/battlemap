@@ -8,7 +8,8 @@ HEADERS += \
     player.h \
     dialognew.h \
     tileposition.h \
-    selectedtile.h
+    selectedtile.h \
+    army.h
 
 SOURCES += \
     battlemap.cpp \
@@ -19,4 +20,5 @@ SOURCES += \
     player.cpp \
     dialognew.cpp \
     tileposition.cpp \
-    selectedtile.cpp
+    selectedtile.cpp \
+    army.cpp

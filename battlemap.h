@@ -20,14 +20,14 @@ class Battlemap : public QWidget
 
   private:
     SelectedTile *clickStatus;
+    SelectedTile *destinationStatus;
     QPoint findWindowCenter();
     void drawMapWindow();
     void InitializeMatrix();
     void drawBox(QPen pen, int x, int y);
-    void deselectTile();
-    void selectTile();
-    void setTileSelected(int row, int column);
     TilePosition findTileAt(QPoint point);
+    void resetTileSelect(SelectedTile *tileSelect);
+    void setTileSelect(SelectedTile *tileSelect, int row, int column, QColor color);
 
   protected:
     void paintEvent(QPaintEvent *event);

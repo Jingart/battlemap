@@ -10,7 +10,8 @@ public:
     int clickI;
     int clickJ;
     QPoint clickPoint;
-    //void getIsTileSelected();
+    void setSelected(int row, int column);
+    void setDeselected();
 };
 
 #endif // CLICKSTATUS_H

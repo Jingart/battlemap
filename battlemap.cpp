@@ -18,7 +18,9 @@ int bmColumns_ = 5;
 int tileLength = 100;
 int initpos_x = 150;
 int initpos_y = 100;
+
 const int NOT_SELECTED = -1;
+const int NO_VALUE= -1;
 const int VERTICAL_SPACING = 5;
 const double HORIZONTAL_SPACING = 1.7;
 const double SHIFTROW_SPACING = 2.5;
@@ -46,6 +48,7 @@ Battlemap::Battlemap(int rows, int columns)
     bmRows_ = rows;
     bmColumns_ = columns;
     clickStatus = new SelectedTile();
+    destinationStatus = new SelectedTile();
     InitializeMatrix();
 }
 
@@ -96,55 +99,39 @@ void Battlemap::setupTile()
     }
 }
 
-
 void Battlemap::mousePressEvent(QMouseEvent *event)
 {
+    TilePosition tilePos;
+
     clickStatus->clickPoint = event->pos();
-    deselectTile();
+    resetTileSelect(clickStatus);
 
     if(event->button() == Qt::LeftButton)
-        selectTile();
+    {
+        tilePos = findTileAt(clickStatus->clickPoint);
+
+        if(tilePos.found())
+            setTileSelect(clickStatus, tilePos.row, tilePos.column, Qt::red);
+    }
 
     repaint();
 }
 
-void Battlemap::selectTile()
+void Battlemap::resetTileSelect(SelectedTile *tileSelect)
 {
-    BattlemapTile bm;
-
-    for(int i = 0; i < bmRows_; i++)
+    if(tileSelect->isTileSelected)
     {
-        for(int j = 0; j < bmColumns_; j++)
-        {
-            bm = bmmatrix[i][j];
-            if(bm.IsTileAt(clickStatus->clickPoint))
-            {
-                setTileSelected(i, j);
-                break;
-            }
-        }
+        bmmatrix[tileSelect->clickI][tileSelect->clickJ].SetBorderColor(Qt::black);
+        tileSelect->setDeselected();
     }
 }
 
-void Battlemap::setTileSelected(int row, int column)
+void Battlemap::setTileSelect(SelectedTile *tileSelect, int row, int column, QColor color)
 {
-    clickStatus->clickI = row;
-    clickStatus->clickJ = column;
-    bmmatrix[clickStatus->clickI][clickStatus->clickJ].SetBorderColor(Qt::red);
-    clickStatus->isTileSelected = true;
+        tileSelect->setSelected(row, column);
+        bmmatrix[tileSelect->clickI][tileSelect->clickJ].SetBorderColor(color);
 }
 
-void Battlemap::deselectTile()
-{
-
-    if(clickStatus->isTileSelected)
-    {
-        bmmatrix[clickStatus->clickI][clickStatus->clickJ].SetBorderColor(Qt::black);
-        clickStatus->clickI = NOT_SELECTED;
-        clickStatus->clickJ = NOT_SELECTED;
-        clickStatus->isTileSelected = false;
-    }
-}
 
 
 void Battlemap::resizeEvent(QResizeEvent *event)
@@ -162,18 +149,26 @@ void Battlemap::mouseMoveEvent(QMouseEvent *event)
     if(clickStatus->isTileSelected)
     {
         tilePos = findTileAt(event->pos());
-        if((tilePos.row == 0 && tilePos.column == 0) || (tilePos.row == clickStatus->clickI + 1 && tilePos.column == clickStatus->clickJ + 1))
+        if((tilePos.row == NO_VALUE && tilePos.column == NO_VALUE) || (tilePos.row == clickStatus->clickI && tilePos.column == clickStatus->clickJ))
+        {
             qDebug() << "no tile";
+            //deselectTile2();
+        }
         else
+        {
             qDebug() << "tile found";
+            //setTileSelected2(tilePos.row - 1, tilePos.column -1);
+        }
 
-
+        repaint();
     }
+
+
 }
 
 TilePosition Battlemap::findTileAt(QPoint point)
 {
-    TilePosition tilePos(0,0);
+    TilePosition tilePos(NO_VALUE, NO_VALUE);
 
     for(int i = 0; i < bmRows_; i++)
     {
@@ -181,8 +176,8 @@ TilePosition Battlemap::findTileAt(QPoint point)
         {
             if(bmmatrix[i][j].IsTileAt(point))
             {
-                tilePos.row = i + 1;
-                tilePos.column = j + 1;
+                tilePos.row = i;
+                tilePos.column = j;
                 break;
             }
         }

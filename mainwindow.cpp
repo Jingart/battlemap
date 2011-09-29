@@ -52,7 +52,7 @@ void MainWindow::newMap()
     //newdialog->show();
     newdialog->exec();
 
-    mainwidget->SetupNewBattlemap(2,2);
+    mainwidget->SetupNewBattlemap(4, 4);
 
 
 

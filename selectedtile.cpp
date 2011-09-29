@@ -11,14 +11,21 @@ SelectedTile::SelectedTile()
     clickJ = NOT_SELECTED;
 }
 
-/*
-bool ClickStatus::getIsTileSelected()
+void SelectedTile::setSelected(int row, int column)
 {
-    return isTileSelected;
+    clickI = row;
+    clickJ = column;
+    isTileSelected = true;
 }
 
-void ClickStatus::setIsTileSelected(bool value)
+void SelectedTile::setDeselected()
 {
-    isTileSelected = value;
+
+    if(isTileSelected)
+    {
+        clickI = NOT_SELECTED;
+        clickJ = NOT_SELECTED;
+        isTileSelected = false;
+    }
 }
-*/
+
